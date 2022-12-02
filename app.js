@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /* - FUNCION 1:  Obtiene el texto del textArea y guarda en el texto en el array - */
 btnSave.addEventListener('click', ()=>{
-
+  console.log('Guardando nota');
   guardarNotas(lista);
 })
 

@@ -1,7 +1,7 @@
 {
     "name": "Aplicación de notas",
     "short_name": "Notas",
-    "start_url": "/index.html",
+    "start_url": "index.html",
     "display": "standalone",
     "description": "Aplicación de notas",
     "theme_color": "#1976d2",
