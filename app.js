@@ -6,10 +6,9 @@ let lista = [];
 let btnsEliminar = [];
 let idnotas = 0
 
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let sideNav = document.querySelectorAll('.sidenav');
-    let instanciaSide = M.Sidenav.init(sideNav  , {});
+    let instanciaSide = M.Sidenav.init(sideNav, {});
 
     let modal = document.querySelectorAll('.modal');
     let instanciaModal = M.Modal.init(modal, {});
@@ -19,58 +18,70 @@ document.addEventListener('DOMContentLoaded', function() {
     idnotas = lista.length;
 });
 
-/* - FUNCION 1:  Obtiene el texto del textArea y guarda en el texto en el array - */
-btnSave.addEventListener('click', ()=>{
-  let getFecha = new Date().toLocaleString();
-  let nota = {
-    nota: textArea.value,
-    fecha: getFecha
-  }
-  lista.push(nota);
-  textArea.value = '';
-  guardarNotas(lista);
+/* - FUNCION 1: Obtiene el texto del textArea y guarda en el texto en el array - */
+btnSave.addEventListener('click', () => {
+    idnotas++
+    let getFecha = new Date().toLocaleString();
+    let nota = {
+        nota: textArea.value,
+        fecha: getFecha,
+        id: idnotas
+    }
+    lista.push(nota);
+    textArea.value = "";
+    console.log(lista)
+
+    guardarNotas(lista);
 })
 
 /* -------- FUNCION 2: Recibe el array y lo guarda en el localStorage ------- */
-function guardarNotas(array){
-  localStorage.setItem('lista', JSON.stringify(array));
-  renderizarNotas();
+function guardarNotas(array) {
+    localStorage.setItem('lista', JSON.stringify(array))
+    renderizarNotas(array);
 }
 
 /* --------- FUNCION 3: Lee los datos del localStorage y lo retorna --------- */
-function leerNotas(){
-  return localStorage.getItem('lista') ?
-    JSON.parse(localStorage.getItem('lista')) : [];
+function leerNotas() {
+    return localStorage.getItem('lista') ?
+        JSON.parse(localStorage.getItem('lista')) : [];
 }
 
 /* -------- FUNCION 4: Recibe el array y lo renderiza en el container ------- */
-function renderizarNotas(array){
-  container.innerHTML= '';
+function renderizarNotas(array) {
+    console.log(array);
 
-  let btnid = 0;
+    let btnid = 0;
 
-  for (const nota of array) {
-    btnid++;
+    container.innerHTML = "";
+    for (const nota of array) {
+        btnid++;
+        let li = document.createElement("li");
+        li.innerHTML = `<span class="fecha">${nota.fecha}</span><span class="nota">${nota.nota}</span><i class="bi bi-trash float-right btn-delete eliminar" id="${nota.id}"></i>`;
 
-    let li = document.createElement('li');
-
-    let span = document.createElement('span');
-    span.className = "nota";
-    span.textContent = nota.nota;
-
-    let span2 = document.createElement('span');
-    span2.className = "fecha"
-    span2.textContent = nota.fecha;
-
-    //let tachito = document.createElement("i");
-    //tachito.setAttribute("class", "bi bi-trash float-right btn-delete eliminar");
-    //tachito.setAttribute("id", btnid);
-
-    container.appendChild(li);
-    li.appendChild(span);
-    li.appendChild(span2);
-    //li.appendChild(tachito);
-  };
+        container.appendChild(li);
+    }
+    btnsEliminar = document.querySelectorAll('.eliminar');
+    btnsEliminar.forEach(btn => {
+        btn.addEventListener('click', () => {
+            eliminarNotas(parseInt(btn.id))
+        })
+    })
 }
 
-/* -------- FUNCION 5: Borrar los datos ------- */
+/* -------- Eliminar notas ------- */
+
+function eliminarNotas(id) {
+    let index = null;
+
+    for (const i in lista) {
+        console.log(lista[i])
+        if (lista[i].id === id) {
+            index = i;
+        }
+    }
+
+    console.log("Index" + index);
+    console.log("Lista" + lista);
+    lista.splice(index, 1);
+    guardarNotas(lista)
+}
