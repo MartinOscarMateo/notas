@@ -56,7 +56,7 @@ function renderizarNotas(array) {
     for (const nota of array) {
         btnid++;
         let li = document.createElement("li");
-        li.innerHTML = `<span class="fecha">${nota.fecha}</span><span class="nota">${nota.nota}</span><i class="bi bi-trash float-right btn-delete eliminar" id="${nota.id}"></i>`;
+        li.innerHTML = `<span class="nota">${nota.nota}</span><span class="fecha">${nota.fecha}</span><i class="bi bi-trash float-right btn-delete eliminar" id="${nota.id}"></i>`;
 
         container.appendChild(li);
     }

@@ -1,6 +1,36 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css");
 
+.collection {
+    border: none;
+}
+
+.collection li {
+    border: 1px solid #e0e0e0;
+    margin-bottom: 0.4rem;
+}
+
+span {
+    display: block;
+}
+
+.nota {
+    color: #1976d2;
+    font-size: 1.2em;
+    margin: 4px 0 4px 10px;
+}
+
+.fecha {
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.eliminar {
+    float: right;
+    margin-top: -36px;
+    margin-right: 15px;
+}
+
 .bi-trash {
     color: crimson;
     cursor: pointer;
-   }
+}
