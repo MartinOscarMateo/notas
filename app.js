@@ -1,10 +1,25 @@
-navigator.serviceWorker.register('sw.js');
+// Pregunto si seriviceWorker esta verificado en este navegador
+if ("serviceWorker" in navigator) {
+    // Al cargar la página registro el sw
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(res =>
+                // Cuando esta promesa termine hago un log de sw registrado
+                console.log("SW registrado")).catch(err =>
+            console.log("SW no registrado", err)
+        );
+
+    })
+
+}
+
 const btnSave = document.querySelector('#btn-save');
 const textArea = document.querySelector('#text-1');
 let container = document.querySelector('.collection');
 let lista = [];
 let btnsEliminar = [];
 let idnotas = 0
+let iModificar = null;
 
 document.addEventListener('DOMContentLoaded', function () {
     let sideNav = document.querySelectorAll('.sidenav');
@@ -20,18 +35,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* - FUNCION 1: Obtiene el texto del textArea y guarda en el texto en el array - */
 btnSave.addEventListener('click', () => {
-    idnotas++
-    let getFecha = new Date().toLocaleString();
-    let nota = {
-        nota: textArea.value,
-        fecha: getFecha,
-        id: idnotas
-    }
-    lista.push(nota);
-    textArea.value = "";
-    console.log(lista)
 
+    if (textArea.value.length < 1) {
+        alert("Su nota esta vacia... :(");
+    } else {
+
+        if (iModificar !== null) {
+            //Editar
+            lista[iModificar].nota = textArea.value;
+        } else {
+            // Crear
+            idnotas++
+            let getFecha = new Date().toLocaleString();
+            let nota = {
+                nota: textArea.value,
+                fecha: getFecha,
+                id: idnotas
+            }
+            lista.push(nota);
+            console.log(lista)
+        
+        }
+
+    }
+    textArea.value = "";
+    iModificar = null;
     guardarNotas(lista);
+
 })
 
 /* -------- FUNCION 2: Recibe el array y lo guarda en el localStorage ------- */
@@ -56,7 +86,17 @@ function renderizarNotas(array) {
     for (const nota of array) {
         btnid++;
         let li = document.createElement("li");
-        li.innerHTML = `<span class="nota">${nota.nota}</span><span class="fecha">${nota.fecha}</span><i class="bi bi-trash float-right btn-delete eliminar" id="${nota.id}"></i>`;
+        li.innerHTML = `<span class="nota">${nota.nota}</span><span class="fecha">${nota.fecha}</span><a class="eliminar"><i class="bi bi-trash float-right btn-delete" id="${nota.id}"></i></a>`;
+        // btnEditar
+        let a = document.querySelector('#scale-demo').cloneNode()
+        a.innerText = 'Editar'
+        a.className = 'btn btn-primary modal-trigger editar'
+        // a.href = "#modal1"
+        a.addEventListener('click', () => {
+            EditarNota(nota.id)
+        })
+
+        li.appendChild(a);
 
         container.appendChild(li);
     }
@@ -84,4 +124,13 @@ function eliminarNotas(id) {
     console.log("Lista" + lista);
     lista.splice(index, 1);
     guardarNotas(lista)
+}
+
+function EditarNota(id) {
+    for (const indice in lista) {
+        if (lista[indice].id === id) {
+            console.log("Nota a modificar es:", lista[indice]);
+            iModificar = indice;
+        }
+    }
 }

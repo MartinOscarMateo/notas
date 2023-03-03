@@ -25,12 +25,35 @@ span {
 }
 
 .eliminar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     float: right;
-    margin-top: -36px;
-    margin-right: 15px;
+    height: 3rem;
+    width: 3rem;
+    background-color: crimson;
+    cursor: pointer;
+    border-radius: 4px;
+    position: relative;
+    bottom: 3.3rem;
+    right: 0.5rem;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+}
+
+.eliminar:hover {
+    background-color: rgb(245, 20, 60);
 }
 
 .bi-trash {
-    color: crimson;
-    cursor: pointer;
+    color: white;
+}
+
+.editar {
+    float: right;
+    position: relative;
+    padding-top: 4px;
+    height: 3rem;
+    right: 1rem;
+    bottom: 3.3rem;
+    border-radius: 4px;
 }
